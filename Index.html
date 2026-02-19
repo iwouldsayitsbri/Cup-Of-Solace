@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cup Of Solace | Coffee Shop & Restaurant</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root{--bg:#f6efe9;--primary:#6b4226;--accent:#c89b7b;--text:#2b2b2b;--white:#ffffff}
+    body.dark{--bg:#1e1b18;--primary:#e0c3a3;--accent:#a47148;--text:#f5f5f5;--white:#2a2623}
+    *{box-sizing:border-box;margin:0;padding:0;font-family:'Poppins',sans-serif}
+    body{background:var(--bg);color:var(--text);overflow-x:hidden}
+
+    nav{background:var(--white);display:flex;justify-content:space-between;align-items:center;padding:15px 25px;position:sticky;top:0;box-shadow:0 2px 10px rgba(0,0,0,.08);z-index:10}
+    nav h2{color:var(--primary)}
+    nav ul{display:flex;gap:15px;list-style:none;align-items:center}
+    nav a{text-decoration:none;color:var(--text);font-weight:500}
+    .toggle{cursor:pointer;border:2px solid var(--accent);padding:6px 12px;border-radius:20px}
+
+    header{background:var(--primary);height:60vh;display:flex;align-items:center;justify-content:center;text-align:center;color:#fff}
+    header .hero{background:rgba(0,0,0,.35);padding:40px;border-radius:20px}
+    header h1{font-size:3rem;margin-bottom:10px}
+    .btn{background:var(--accent);padding:10px 22px;border:none;border-radius:25px;color:#fff;font-weight:600;cursor:pointer}
+
+    section{padding:60px 20px;max-width:1100px;margin:auto}
+    .section-title{text-align:center;margin-bottom:30px}
+
+    .categories{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin-bottom:25px}
+    .cat-btn{padding:8px 16px;border-radius:20px;border:1px solid var(--accent);cursor:pointer;background:var(--white)}
+    .cat-btn.active{background:var(--accent);color:#fff}
+
+    .menu{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:20px}
+    .card{background:var(--white);padding:20px;border-radius:16px;box-shadow:0 4px 12px rgba(0,0,0,.08);text-align:center}
+
+    .cart{position:fixed;right:15px;bottom:15px;background:var(--primary);color:#fff;padding:14px 18px;border-radius:50px;cursor:pointer}
+    .cart-box{position:fixed;right:15px;bottom:80px;width:300px;background:var(--white);border-radius:15px;box-shadow:0 6px 20px rgba(0,0,0,.2);padding:15px;display:none}
+    .cart-items{max-height:180px;overflow:auto;font-size:14px;margin-bottom:10px}
+
+    footer{background:var(--primary);color:#fff;text-align:center;padding:25px;margin-top:40px}
+  </style>
+</head>
+<body>
+
+  <nav>
+    <h2>Cup Of Solace</h2>
+    <ul>
+      <li><a href="#menu">Menu</a></li>
+      <li><a href="#order">Order</a></li>
+      <li><span class="toggle" onclick="toggleDark()">Dark Mode</span></li>
+    </ul>
+  </nav>
+
+  <header>
+    <div class="hero">
+      <h1>Cup Of Solace</h1>
+      <p>Order • Relax • Enjoy</p>
+      <button class="btn" onclick="scrollToSection('menu')">Start Order</button>
+    </div>
+  </header>
+
+  <section id="menu">
+    <h2 class="section-title">Coffee Menu</h2>
+    <div class="categories">
+      <button class="cat-btn active" onclick="filterMenu('all',this)">All</button>
+      <button class="cat-btn" onclick="filterMenu('coffee',this)">Coffee</button>
+    </div>
+
+    <div class="menu" id="menuItems">
+      <div class="card" data-cat="coffee"><h3>Americano</h3><button class="btn" onclick="addToCart('Americano')">Add</button></div>
+      <div class="card" data-cat="coffee"><h3>Latte</h3><button class="btn" onclick="addToCart('Latte')">Add</button></div>
+      <div class="card" data-cat="coffee"><h3>Cappuccino</h3><button class="btn" onclick="addToCart('Cappuccino')">Add</button></div>
+      <div class="card" data-cat="coffee"><h3>Caramel Macchiato</h3><button class="btn" onclick="addToCart('Caramel Macchiato')">Add</button></div>
+      <div class="card" data-cat="coffee"><h3>Mocha</h3><button class="btn" onclick="addToCart('Mocha')">Add</button></div>
+      <div class="card" data-cat="coffee"><h3>White Chocolate Mocha</h3><button class="btn" onclick="addToCart('White Chocolate Mocha')">Add</button></div>
+      <div class="card" data-cat="coffee"><h3>Hazelnut Latte</h3><button class="btn" onclick="addToCart('Hazelnut Latte')">Add</button></div>
+      <div class="card" data-cat="coffee"><h3>French Vanilla Latte</h3><button class="btn" onclick="addToCart('French Vanilla Latte')">Add</button></div>
+      <div class="card" data-cat="coffee"><h3>Espresso</h3><button class="btn" onclick="addToCart('Espresso')">Add</button></div>
+      <div class="card" data-cat="coffee"><h3>Iced Coffee</h3><button class="btn" onclick="addToCart('Iced Coffee')">Add</button></div>
+    </div>
+  </section>
+
+  <section id="order">
+    <h2 class="section-title">Delivery / Payment</h2>
+    <form onsubmit="placeOrder(event)">
+      <input type="text" placeholder="Name" required>
+      <input type="text" placeholder="Address" required>
+      <select required>
+        <option value="">Payment Method</option>
+        <option>Cash</option>
+        <option>GCash</option>
+        <option>Card</option>
+      </select>
+      <button class="btn">Place Order</button>
+    </form>
+  </section>
+
+  <div class="cart" onclick="toggleCart()">🛒</div>
+  <div class="cart-box" id="cartBox">
+    <h3>Your Cart</h3>
+    <div class="cart-items" id="cartItems"></div>
+    <button class="btn" onclick="checkout()">Checkout</button>
+  </div>
+
+  <footer>© 2026 Cup Of Solace</footer>
+
+  <script>
+    function toggleDark(){document.body.classList.toggle('dark')}
+    function scrollToSection(id){document.getElementById(id).scrollIntoView({behavior:'smooth'})}
+
+    function filterMenu(category,btn){
+      document.querySelectorAll('.cat-btn').forEach(b=>b.classList.remove('active'));
+      btn.classList.add('active');
+      document.querySelectorAll('#menuItems .card').forEach(card=>{
+        card.style.display=(category==='all'||card.dataset.cat===category)?'block':'none';
+      })
+    }
+
+    let cart=[];
+    function addToCart(item){cart.push(item);renderCart()}
+    function renderCart(){document.getElementById('cartItems').innerHTML=cart.map(i=>'• '+i).join('<br>')}
+    function toggleCart(){const b=document.getElementById('cartBox');b.style.display=b.style.display==='block'?'none':'block'}
+    function checkout(){alert('Order placed!');cart=[];renderCart()}
+    function placeOrder(e){e.preventDefault();alert('Delivery order sent!')}
+  </script>
+
+</body>
+</html>
